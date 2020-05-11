@@ -32,10 +32,13 @@
 
 <script>
 import ColumnTask from './ColumnTask'
+import movingTasksAndColumnsMixin from '@/mixins/movingTasksAndColumnsMixin'
 
 export default {
   name: 'BoardColumn',
   components: { ColumnTask },
+  mixins: [movingTasksAndColumnsMixin],
+
   props: {
     column: {
       type: Object,
@@ -56,52 +59,12 @@ export default {
       // clear the input
       e.target.value = ''
     },
-    goToTask (task) {
-      this.$router.push({ name: 'task', params: { id: task.id } })
-    },
-    close () {
-      this.$router.push({ name: 'board' })
-    },
-    pickupTask (e, fromTaskIndex, fromColumnIndex) {
-      e.dataTransfer.effectAllowed = 'move'
-      e.dataTransfer.dropEffect = 'move'
-      e.dataTransfer.setData('from-task-index', fromTaskIndex)
-      e.dataTransfer.setData('from-column-index', fromColumnIndex)
-      e.dataTransfer.setData('type', 'task') // <--- New code to identify task
-    },
     pickupColumn (e, fromColumnIndex) {
       e.dataTransfer.effectAllowed = 'move'
       e.dataTransfer.dropEffect = 'move'
 
       e.dataTransfer.setData('from-column-index', fromColumnIndex)
       e.dataTransfer.setData('type', 'column')
-    },
-    moveTask (e, toTasks, toTaskIndex) {
-      const fromColumnIndex = e.dataTransfer.getData('from-column-index')
-      const fromTasks = this.board.columns[fromColumnIndex].tasks
-      const fromTaskIndex = e.dataTransfer.getData('from-task-index')
-
-      this.$store.commit('MOVE_TASK', {
-        fromTasks,
-        fromTaskIndex,
-        toTasks,
-        toTaskIndex
-      })
-    },
-    moveTaskOrColumn (e, toTasks, toColumnIndex, toTaskIndex) {
-      const type = e.dataTransfer.getData('type')
-      if (type === 'task') {
-        this.moveTask(e, toTasks, toTaskIndex !== undefined ? toTaskIndex : toTasks.length)
-      } else {
-        this.moveColumn(e, toColumnIndex)
-      }
-    },
-    moveColumn (e, toColumnIndex) {
-      const fromColumnIndex = e.dataTransfer.getData('from-column-index')
-      this.$store.commit('MOVE_COLUMN', {
-        fromColumnIndex,
-        toColumnIndex
-      })
     }
   }
 }
