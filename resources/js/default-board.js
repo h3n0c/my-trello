@@ -1,4 +1,4 @@
-import { uuid } from './utils'
+import { uuid } from '../../src/utils'
 
 export default {
   name: 'workshop',

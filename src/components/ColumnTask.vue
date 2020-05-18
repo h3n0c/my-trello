@@ -9,9 +9,9 @@
             fromColumnIndex: columnIndex,
             fromTaskIndex: taskIndex
           }"
-      @click="goToTask(task)"
     >
-      <span class="w-full flex-no-shrink font-bold">
+      <span class="w-full flex-no-shrink font-bold"      @click="goToTask(task)"
+      >
                           {{ task.name }}
                         </span>
     <p v-if="task.description"
