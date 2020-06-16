@@ -28,9 +28,10 @@ class TaskColumn
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity=BoardColumn::class, inversedBy="tasks")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $test;
+    private $boardColumn;
 
     public function getId(): ?int
     {
@@ -57,6 +58,18 @@ class TaskColumn
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getBoardColumn(): ?BoardColumn
+    {
+        return $this->boardColumn;
+    }
+
+    public function setBoardColumn(?BoardColumn $boardColumn): self
+    {
+        $this->boardColumn = $boardColumn;
 
         return $this;
     }
